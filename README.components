@@ -101,6 +101,7 @@ CONF_ENABLE_ARGS="
 --with-omnithread%--with-gnuradio-core%--with-pmt%--with-mblock%--enable-gr-audio-oss
 --with-omnithread%--with-gnuradio-core%--with-pmt%--with-mblock%--enable-gr-audio-osx
 --with-omnithread%--with-gnuradio-core%--with-pmt%--with-mblock%--enable-gr-audio-portaudio
+--with-omnithread%--with-gnuradio-core%--with-pmt%--with-mblock%--enable-gr-perseus
 --with-omnithread%--with-gnuradio-core%--with-pmt%--with-mblock%--enable-gr-audio-windows
 --with-omnithread%--with-gnuradio-core%--with-pmt%--with-mblock%--enable-gr-atsc
 --with-omnithread%--with-gnuradio-core%--with-pmt%--with-mblock%--enable-gr-comedi

@@ -1,0 +1,11 @@
+libgnuradio-perseus.la
+Makefile
+Makefile.in
+old
+perseus.cc
+_perseus.la
+_perseus_la-perseus.lo
+perseus.py
+perseus.pyc
+perseus_source_c.lo
+

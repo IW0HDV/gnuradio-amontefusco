@@ -1,0 +1,12 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+
+Name: gnuradio-perseus
+Description: The GNU Radio block for Microtelecom Perseus
+Requires: gnuradio-core
+Version: @VERSION@
+Libs: -L${libdir} -lgnuradio-perseus
+Cflags: -I${includedir}
+
