@@ -261,8 +261,11 @@ perseus_source_c::perseus_source_c (int sampling_rate,
     d_fef     = 0; 
     d_freq    = 7100000.0;
 
-    eeprom_prodid prodid; // Perseus library data structure
 
+    d_serial_number = 0;  // product id
+    d_signature = 0;      // product signature"0000-0000-0000"; 
+    d_hw_release = 0;     // hardware release
+    d_hw_version = 0;     // hardware version
 
     // Open the first one...
     if ((pPd = perseus_open(0))==NULL) {
@@ -278,24 +281,29 @@ perseus_source_c::perseus_source_c (int sampling_rate,
          bail ("perseus firmware download error !", 0);
     }
 
-    // Dump some information about the receiver (S/N and HW rev)
+    // Save some information about the receiver (S/N and HW rev)
+    eeprom_prodid prodid; // Perseus library data structure
+
     if (pPd->is_preserie == TRUE)
        printf("The device is a preserie unit");
     else
-       if (perseus_get_product_id(pPd,&prodid)<0)
-               printf("get product id error: %s", perseus_errorstr());
-       else
-               printf("Receiver S/N: %05d-%02hX%02hX-%02hX%02hX-%02hX%02hX - HW Release:%hd.%hd\n",
-               (uint16_t) prodid.sn,
-               (uint16_t) prodid.signature[5],
-               (uint16_t) prodid.signature[4],
-               (uint16_t) prodid.signature[3],
-               (uint16_t) prodid.signature[2],
-               (uint16_t) prodid.signature[1],
-               (uint16_t) prodid.signature[0],
-               (uint16_t) prodid.hwrel,
-               (uint16_t) prodid.hwver);
+       if (perseus_get_product_id(pPd,&prodid) >= 0) {
+           d_signature = new char [SIGNATURE_LENGTH+1]; // product signature"0000-0000-0000"; 
+           snprintf(d_signature, SIGNATURE_LENGTH, "%02hX%02hX-%02hX%02hX-%02hX%02hX",
+                    (uint16_t) prodid.signature[5],
+                    (uint16_t) prodid.signature[4],
+                    (uint16_t) prodid.signature[3],
+                    (uint16_t) prodid.signature[2],
+                    (uint16_t) prodid.signature[1],
+                    (uint16_t) prodid.signature[0]
+                   );
+           d_serial_number = (uint16_t) prodid.sn;
+           d_hw_release = (uint16_t) prodid.hwrel;
+           d_hw_version = (uint16_t) prodid.hwver;
 
+       } else {
+           printf("get product id error: %s", perseus_errorstr());
+       }
 
     char *fn = getFpgaFile (sampling_rate);
 
@@ -356,6 +364,7 @@ perseus_source_c::~perseus_source_c ()
 	perseus_close (pPd);
 	m_singleton -= 1;
 	if (m_singleton == 0) perseus_exit();
+    delete [] d_signature;
 }
 
 

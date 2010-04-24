@@ -47,8 +47,8 @@ class wfm_rx_block (gr.top_block):
         perseus_rate = int(options.sample_rate)
         
         self.p = perseus.source_c(perseus_rate)             # Perseus is data source
-
         print "PY: >>>>>>\n   AFTER CREATION PERSEUS OBJECT\n>>>>>>\n"
+        print "Receiver S/N: %d-%s - HW Release:%d.%d" % (self.p.get_sn(),self.p.get_signature(),self.p.get_hw_release(),self.p.get_hw_version())
 
         adc_rate = 80000000                # 80 MS/s
         perseus_decim = 160
@@ -70,7 +70,6 @@ class wfm_rx_block (gr.top_block):
                                             115e3,       # stopband cutoff
                                             0.1,         # passband ripple
                                             60)          # stopband attenuation
-        #print len(chan_filt_coeffs)
         chan_filt = gr.fir_filter_ccf (chanfilt_decim, chan_filt_coeffs)
 
         self.guts = blks2.wfm_rcv (demod_rate, audio_decimation)

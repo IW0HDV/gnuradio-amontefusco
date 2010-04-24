@@ -46,6 +46,8 @@ perseus_make_source_c (int sampling_rate,
 					   const std::string device_name = "",
 					   bool ok_to_block = true)  throw (std::runtime_error);
 
+#define SIGNATURE_LENGTH 32
+
 /*!
  * \ I/Q source using PERSEUS
  *
@@ -85,6 +87,12 @@ class perseus_source_c : public gr_sync_block {
   int	d_noverruns;		// count of overruns
   //gri_logger_sptr	d_log;			// handle to non-blocking logging instance
 
+  unsigned short d_serial_number;        // product id
+  char *d_signature;                     // product signature "0000-0000-0000"
+  unsigned short d_hw_release;           // hardware release
+  unsigned short d_hw_version;           // hardware version
+
+
   void output_error_msg (const char *msg, int err);
   void bail (const char *msg, int err) throw (std::runtime_error);
   void create_ringbuffer();
@@ -102,6 +110,10 @@ class perseus_source_c : public gr_sync_block {
   void set_frontend_filters (bool activate);
   void set_adc_dither (bool f_dither);
   void set_adc_preamp (bool f_preamp);
+  int  get_sn (void) { return d_serial_number; }
+  std::string get_signature (void) { return std::string(d_signature); }
+  int  get_hw_release (void) { return d_hw_release; }
+  int  get_hw_version (void) { return d_hw_version; } 
 
   bool check_topology (int ninputs, int noutputs);
 

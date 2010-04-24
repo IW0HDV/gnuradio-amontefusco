@@ -50,6 +50,10 @@ class perseus_source_c : public gr_sync_block {
   void set_frontend_filters (bool activate);
   void set_adc_dither (bool f_dither);
   void set_adc_preamp (bool f_preamp);
+  int  get_sn (void);
+  std::string get_signature (void);
+  int  get_hw_release (void);
+  int  get_hw_version (void);
 
   ~perseus_source_c ();
 };
